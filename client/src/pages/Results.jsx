@@ -4,25 +4,92 @@ function Results() {
   const location = useLocation();
   const { skinType, recommendations } = location.state || {};
 
+  // Deskripsi untuk setiap tipe kulit
+  const skinTypeDescriptions = {
+    oily: "Kulit berminyak ditandai dengan produksi sebum berlebih. Perlu perawatan yang mengontrol minyak tanpa membuat kulit kering.",
+    dry: "Kulit kering membutuhkan lebih banyak kelembaban. Fokus pada produk yang menghidrasi dan melindungi barrier kulit.",
+    combination: "Kulit kombinasi memiliki area yang berminyak (T-zone) dan area yang kering. Butuh perawatan yang seimbang.",
+    sensitive: "Kulit sensitif mudah bereaksi. Gunakan produk lembut dan hindari bahan yang terlalu keras.",
+    normal: "Kulit normal cenderung seimbang. Fokus pada menjaga kesehatan kulit dan pencegahan masalah kulit.",
+  };
+
+  const tips = {
+    oily: [
+      "Gunakan cleanser berbasis water-based",
+      "Pilih moisturizer yang oil-free",
+      "Jangan skip moisturizer",
+      "Gunakan sunscreen yang ringan"
+    ],
+    dry: [
+      "Gunakan cleanser yang lembut dan non-foaming",
+      "Pakai moisturizer yang lebih kaya",
+      "Hindari air panas saat mencuci muka",
+      "Tambahkan serum hyaluronic acid"
+    ],
+    combination: [
+      "Gunakan produk berbeda untuk area berbeda",
+      "Pilih gel moisturizer ringan",
+      "Fokus toner pada T-zone",
+      "Seimbangkan penggunaan produk"
+    ],
+    sensitive: [
+      "Pilih produk bebas parfum",
+      "Lakukan patch test untuk produk baru",
+      "Hindari bahan yang terlalu aktif",
+      "Gunakan sunscreen mineral"
+    ],
+    normal: [
+      "Jaga rutinitas skincare konsisten",
+      "Gunakan sunscreen setiap hari",
+      "Perhatikan perubahan kondisi kulit",
+      "Pilih produk sesuai kebutuhan"
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-center mb-8">Your Results</h1>
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4">Your Skin Type: {skinType}</h2>
-          <div className="mt-8">
-            <h3 className="text-lg font-semibold mb-4">Recommended Products</h3>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {recommendations?.map((product) => (
-                <div key={product._id} className="bg-white border rounded-lg p-4">
-                  <h4 className="font-semibold">{product.name}</h4>
-                  <p className="text-gray-600">{product.brand}</p>
-                  <p className="text-sm mt-2">{product.description}</p>
-                  <p className="text-blue-600 font-semibold mt-2">${product.price}</p>
+        <h1 className="text-3xl font-bold text-center mb-8">Hasil Analisis Kulit Anda</h1>
+        
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <h2 className="text-xl font-bold mb-4">Tipe Kulit: {skinType?.charAt(0).toUpperCase() + skinType?.slice(1)}</h2>
+          <p className="text-gray-600 mb-4">{skinTypeDescriptions[skinType]}</p>
+          
+          <div className="mt-6">
+            <h3 className="font-semibold mb-3">Tips Perawatan:</h3>
+            <ul className="list-disc pl-5 space-y-2">
+              {tips[skinType]?.map((tip, index) => (
+                <li key={index} className="text-gray-700">{tip}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-bold mb-6">Rekomendasi Produk</h2>
+          {recommendations?.length > 0 ? (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {recommendations.map((product) => (
+                <div key={product._id} className="border rounded-lg p-4 hover:shadow-lg transition-shadow">
+                  <h3 className="font-semibold mb-2">{product.name}</h3>
+                  <p className="text-gray-600 text-sm mb-2">{product.brand}</p>
+                  <p className="text-sm mb-3">{product.description}</p>
+                  <p className="text-blue-600 font-semibold">Rp {product.price?.toLocaleString()}</p>
                 </div>
               ))}
             </div>
-          </div>
+          ) : (
+            <p className="text-gray-600 text-center">Belum ada rekomendasi produk untuk tipe kulit Anda.</p>
+          )}
+        </div>
+
+        <div className="mt-8 text-center">
+          <button 
+            onClick={() => window.print()} 
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+          >
+            Cetak Hasil
+          </button>
         </div>
       </div>
     </div>
