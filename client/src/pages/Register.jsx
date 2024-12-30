@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/api';
 
 function Register() {
@@ -10,21 +10,43 @@ function Register() {
     confirmPassword: ''
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    // Validasi password
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError('Password tidak cocok');
+      setIsLoading(false);
       return;
     }
+
+    // Validasi password length
+    if (formData.password.length < 6) {
+      setError('Password minimal 6 karakter');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const { confirmPassword, ...registerData } = formData;
       const response = await authService.register(registerData);
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('token', response.token);
       navigate('/quiz');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
+      setError(err.response?.data?.message || 'Registrasi gagal');
+      // Clear password fields on error
+      setFormData(prev => ({
+        ...prev,
+        password: '',
+        confirmPassword: ''
+      }));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -44,8 +66,9 @@ function Register() {
               type="text"
               value={formData.username}
               onChange={(e) => setFormData({...formData, username: e.target.value})}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              disabled={isLoading}
             />
           </div>
           <div>
@@ -54,8 +77,9 @@ function Register() {
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              disabled={isLoading}
             />
           </div>
           <div>
@@ -64,8 +88,10 @@ function Register() {
               type="password"
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              disabled={isLoading}
+              minLength={6}
             />
           </div>
           <div>
@@ -74,16 +100,22 @@ function Register() {
               type="password"
               value={formData.confirmPassword}
               onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              disabled={isLoading}
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white rounded-lg py-2 hover:bg-blue-700"
+            className={`w-full bg-blue-600 text-white rounded-lg py-2 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={isLoading}
           >
-            Register
+            {isLoading ? 'Processing...' : 'Register'}
           </button>
+          <div className="text-center mt-4">
+            <span className="text-gray-600">Sudah punya akun? </span>
+            <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
+          </div>
         </form>
       </div>
     </div>

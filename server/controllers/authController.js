@@ -6,10 +6,21 @@ exports.register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    // Check if user exists
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ message: 'User already exists' });
+    // Check if user exists with email or username
+    const existingUser = await User.findOne({ 
+      $or: [
+        { email: email },
+        { username: username }
+      ]
+    });
+
+    if (existingUser) {
+      if (existingUser.email === email) {
+        return res.status(400).json({ message: 'Email sudah terdaftar' });
+      }
+      if (existingUser.username === username) {
+        return res.status(400).json({ message: 'Username sudah digunakan' });
+      }
     }
 
     // Hash password
@@ -17,7 +28,7 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create new user
-    user = new User({
+    const user = new User({
       username,
       email,
       password: hashedPassword
@@ -41,7 +52,8 @@ exports.register = async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Register error:', err);
+    res.status(500).json({ message: 'Terjadi kesalahan pada server' });
   }
 };
 
@@ -52,13 +64,13 @@ exports.login = async (req, res) => {
     // Check user exists
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: 'Email atau password salah' });
     }
 
     // Verify password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: 'Email atau password salah' });
     }
 
     // Create token
@@ -77,6 +89,7 @@ exports.login = async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Login error:', err);
+    res.status(500).json({ message: 'Terjadi kesalahan pada server' });
   }
 };
