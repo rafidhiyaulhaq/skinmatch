@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/api';
 
 function Login() {
@@ -8,16 +8,26 @@ function Login() {
     password: ''
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
     try {
       const response = await authService.login(formData);
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('token', response.token);
       navigate('/quiz');
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.response?.data?.message || 'Login gagal');
+      setFormData(prev => ({
+        ...prev,
+        password: ''
+      }));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -37,8 +47,9 @@ function Login() {
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              disabled={isLoading}
             />
           </div>
           <div>
@@ -47,16 +58,24 @@ function Login() {
               type="password"
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              disabled={isLoading}
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white rounded-lg py-2 hover:bg-blue-700"
+            className={`w-full bg-blue-600 text-white rounded-lg py-2 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              isLoading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={isLoading}
           >
-            Login
+            {isLoading ? 'Processing...' : 'Login'}
           </button>
+          <div className="text-center mt-4">
+            <span className="text-gray-600">Belum punya akun? </span>
+            <Link to="/register" className="text-blue-600 hover:underline">Register</Link>
+          </div>
         </form>
       </div>
     </div>
