@@ -11,7 +11,8 @@ const productSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    required: true
+    required: true,
+    enum: ['cleanser', 'toner', 'moisturizer', 'sunscreen', 'serum']
   },
   skinType: [{
     type: String,
@@ -21,7 +22,11 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  description: String,
+  description: {
+    type: String,
+    required: true
+  },
+  ingredients: [String],
   rating: {
     type: Number,
     default: 0

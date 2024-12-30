@@ -5,6 +5,8 @@ const connectDB = require('./config/db');
 
 const app = express();
 const productRoutes = require('./routes/productRoutes');
+const { seedProducts } = require('./seed/products');
+const Product = require('./models/Product');
 
 // CORS setup - lebih lengkap dan spesifik
 app.use(cors({
@@ -17,6 +19,12 @@ app.use(cors({
 
 // Connect Database
 connectDB();
+
+if (process.env.NODE_ENV !== 'production') {
+    seedProducts(Product).then(() => {
+      console.log('Seeding completed');
+    });
+  }
 
 // Middleware
 app.use(express.json());

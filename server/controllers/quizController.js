@@ -2,10 +2,8 @@ const QuizResult = require('../models/Quiz');
 const Product = require('../models/Product');
 
 const determineSkinType = (answers) => {
-  // Menganalisis jawaban untuk menentukan skin type
   const {oiliness, dryness, sensitivity, pores, acne} = answers;
   
-  // Logic untuk menentukan skin type
   if (oiliness === 'very_oily' && pores === 'large_visible') {
     return 'oily';
   }
@@ -27,10 +25,8 @@ exports.submitQuiz = async (req, res) => {
     const { answers } = req.body;
     const userId = req.userId;
 
-    // Determine skin type based on answers
     const skinType = determineSkinType(answers);
 
-    // Save quiz result
     const quizResult = new QuizResult({
       userId,
       skinType,
@@ -39,14 +35,19 @@ exports.submitQuiz = async (req, res) => {
 
     await quizResult.save();
 
-    // Get product recommendations
-    const recommendations = await Product.find({ skinType })
-      .limit(3);
+    // Get product recommendations berdasarkan skin type dan kategori
+    const recommendations = await Product.find({
+      skinType: skinType,
+      category: { $in: ['cleanser', 'moisturizer'] } // Prioritaskan cleanser dan moisturizer
+    })
+    .sort({ rating: -1 })
+    .limit(3);
 
     res.json({
       skinType,
       recommendations,
-      message: 'Quiz completed successfully'
+      message: 'Quiz completed successfully',
+      tips: getTipsForSkinType(skinType)
     });
 
   } catch (err) {
@@ -57,11 +58,43 @@ exports.submitQuiz = async (req, res) => {
   }
 };
 
+const getTipsForSkinType = (skinType) => {
+  const tips = {
+    oily: [
+      "Gunakan pembersih wajah khusus kulit berminyak",
+      "Pilih moisturizer berbasis gel",
+      "Gunakan toner dengan kandungan BHA"
+    ],
+    dry: [
+      "Gunakan pembersih wajah yang lembut",
+      "Aplikasikan pelembap yang kaya",
+      "Hindari produk dengan alkohol"
+    ],
+    combination: [
+      "Gunakan produk berbeda untuk area berbeda",
+      "Pilih pelembap ringan",
+      "Fokus pembersihan pada T-zone"
+    ],
+    sensitive: [
+      "Pilih produk hypoallergenic",
+      "Hindari produk dengan pewangi",
+      "Lakukan patch test"
+    ],
+    normal: [
+      "Pertahankan rutinitas skincare",
+      "Gunakan sunscreen setiap hari",
+      "Pilih produk sesuai kebutuhan"
+    ]
+  };
+  
+  return tips[skinType] || [];
+};
+
 exports.getHistory = async (req, res) => {
   try {
     const results = await QuizResult.find({ userId: req.userId })
       .sort({ createdAt: -1 })
-      .limit(5);  // Batasi 5 hasil terakhir
+      .limit(5);
     res.json(results);
   } catch (err) {
     console.error('Get history error:', err);
