@@ -26,6 +26,7 @@ exports.submitQuiz = async (req, res) => {
     const userId = req.userId;
 
     const skinType = determineSkinType(answers);
+    console.log('Determined skin type:', skinType);
 
     const quizResult = new QuizResult({
       userId,
@@ -34,14 +35,20 @@ exports.submitQuiz = async (req, res) => {
     });
 
     await quizResult.save();
+    console.log('Quiz result saved');
 
-    // Get product recommendations berdasarkan skin type dan kategori
+    // Debug products
+    const allProducts = await Product.find();
+    console.log('All products:', allProducts.length);
+
+    // Get recommendations with debugging
     const recommendations = await Product.find({
-      skinType: skinType,
-      category: { $in: ['cleanser', 'moisturizer'] } // Prioritaskan cleanser dan moisturizer
+      skinType: skinType
     })
     .sort({ rating: -1 })
     .limit(3);
+
+    console.log('Found recommendations:', recommendations);
 
     res.json({
       skinType,

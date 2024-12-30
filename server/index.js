@@ -19,6 +19,16 @@ app.use(cors({
 
 // Connect Database
 connectDB();
+connectDB().then(async () => {
+    console.log('MongoDB Connected...');
+    try {
+      // Force seed products
+      await seedProducts(Product);
+      console.log('Products seeded successfully');
+    } catch (error) {
+      console.error('Seeding error:', error);
+    }
+  });
 
 if (process.env.NODE_ENV !== 'production') {
     seedProducts(Product).then(() => {
