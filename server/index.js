@@ -7,8 +7,11 @@ const app = express();
 const productRoutes = require('./routes/productRoutes');
 
 // CORS setup
+
 app.use(cors({
-  origin: 'https://skinmatch-five.vercel.app',
+  origin: ['https://skinmatch-five.vercel.app', 'http://localhost:5173'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 
