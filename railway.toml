@@ -3,6 +3,9 @@ builder = "nixpacks"
 buildCommand = "cd server && npm install"
 
 [deploy]
-startCommand = "cd server && node index.js"
+startCommand = "cd server && npm start"
 restartPolicyType = "ON_FAILURE"
 healthcheckPath = "/"
+
+[service]
+internal_port = 8080
