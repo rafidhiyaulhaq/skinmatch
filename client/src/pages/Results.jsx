@@ -52,7 +52,9 @@ function Results() {
         <h1 className="text-3xl font-bold text-center mb-8">Hasil Analisis Kulit Anda</h1>
         
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h2 className="text-xl font-bold mb-4">Tipe Kulit: {skinType?.charAt(0).toUpperCase() + skinType?.slice(1)}</h2>
+          <h2 className="text-xl font-bold mb-4">
+            Tipe Kulit: {skinType?.charAt(0).toUpperCase() + skinType?.slice(1)}
+          </h2>
           <p className="text-gray-600 mb-4">{skinTypeDescriptions[skinType]}</p>
           
           <div className="mt-6">
@@ -70,23 +72,52 @@ function Results() {
           {recommendations?.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {recommendations.map((product) => (
-                <div key={product._id} className="border rounded-lg p-4 hover:shadow-lg transition-shadow">
-                  <h3 className="font-semibold mb-2">{product.name}</h3>
-                  <p className="text-gray-600 text-sm mb-2">{product.brand}</p>
-                  <p className="text-sm mb-3">{product.description}</p>
-                  <p className="text-blue-600 font-semibold">Rp {product.price?.toLocaleString()}</p>
+                <div key={product._id} className="border rounded-lg overflow-hidden hover:shadow-lg transition-all">
+                  {product.imageUrl && (
+                    <div className="relative w-full pt-[100%]">
+                      <img 
+                        src={product.imageUrl} 
+                        alt={product.name}
+                        className="absolute top-0 left-0 w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                    <p className="text-gray-600 text-sm mb-2">{product.brand}</p>
+                    <p className="text-sm text-gray-700 mb-3">{product.description}</p>
+                    <div className="flex justify-between items-center">
+                      <p className="text-blue-600 font-semibold">
+                        Rp {product.price?.toLocaleString()}
+                      </p>
+                      <div className="flex items-center">
+                        <span className="text-yellow-400 mr-1">★</span>
+                        <span className="text-sm text-gray-600">{product.rating}</span>
+                      </div>
+                    </div>
+                    {product.ingredients && (
+                      <div className="mt-3 pt-3 border-t">
+                        <p className="text-sm text-gray-500">
+                          <span className="font-medium">Key Ingredients:</span>{' '}
+                          {product.ingredients.join(', ')}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-gray-600 text-center">Belum ada rekomendasi produk untuk tipe kulit Anda.</p>
+            <p className="text-gray-600 text-center">
+              Belum ada rekomendasi produk untuk tipe kulit Anda.
+            </p>
           )}
         </div>
 
         <div className="mt-8 text-center">
           <button 
             onClick={() => window.print()} 
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Cetak Hasil
           </button>
