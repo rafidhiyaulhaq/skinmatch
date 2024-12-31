@@ -112,7 +112,7 @@ const products = [
       skinType: ["normal"],
       price: 120000,
       description: "Pembersih wajah lembut untuk kulit normal",
-      imageUrl: "https://m.media-amazon.com/images/I/51qoAyXQGxL._AC_UF1000,1000_QL80_.jpg",
+      imageUrl: "https://images-eu.ssl-images-amazon.com/images/I/51lV2Pem64L._AC_UL210_SR210,210_.jpg",
       ingredients: ["Chamomile", "Vitamin B5"],
       rating: 4.3
     },
