@@ -6,6 +6,8 @@ const seedProducts = require('./seed/products');
 
 const app = express();
 const productRoutes = require('./routes/productRoutes');
+const authRoutes = require('./routes/authRoutes'); 
+const quizRoutes = require('./routes/quizRoutes');
 const Product = require('./models/Product');
 
 // CORS setup
@@ -13,9 +15,12 @@ app.use(cors({
   origin: ['https://skinmatch-five.vercel.app', 'http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  preflightContinue: true
+  credentials: true
 }));
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Connect Database and Seed
 connectDB()
@@ -31,10 +36,6 @@ connectDB()
     console.error('Database connection error:', err);
   });
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 // Health check route
 app.get('/', (req, res) => {
   res.json({
@@ -49,36 +50,25 @@ app.get('/', (req, res) => {
   });
 });
 
-// Routes dengan error handling
-app.use('/api/auth', (req, res, next) => {
-  console.log(`Auth Request: ${req.method} ${req.path}`);
-  next();
-}, require('./routes/authRoutes'));
+// Mount routes
+app.use('/api/auth', authRoutes);
+app.use('/api/quiz', quizRoutes);
+app.use('/api/products', productRoutes);
 
-app.use('/api/quiz', (req, res, next) => {
-  console.log(`Quiz Request: ${req.method} ${req.path}`);
-  next();
-}, require('./routes/quizRoutes'));
+// Error handling untuk route yang tidak ditemukan
+app.use('*', (req, res) => {
+  res.status(404).json({
+    status: 'error',
+    message: 'Route not found'
+  });
+});
 
-app.use('/api/products', (req, res, next) => {
-  console.log(`Products Request: ${req.method} ${req.path}`);
-  next();
-}, productRoutes);
-
-// Error handling
+// Global error handling
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(err.status || 500).json({
     status: 'error',
     message: err.message || 'Internal Server Error'
-  });
-});
-
-// Handle 404
-app.use((req, res) => {
-  res.status(404).json({
-    status: 'error',
-    message: 'Route not found'
   });
 });
 
