@@ -4,7 +4,6 @@ const path = require('path');
 require('dotenv').config();
 const connectDB = require('./config/db');
 const seedProducts = require('./seed/products');
-const fetch = require('node-fetch');
 
 const app = express();
 const productRoutes = require('./routes/productRoutes');
@@ -12,7 +11,6 @@ const authRoutes = require('./routes/authRoutes');
 const quizRoutes = require('./routes/quizRoutes');
 const Product = require('./models/Product');
 
-// Middleware
 app.use(cors({
   origin: ['https://skinmatch-five.vercel.app', 'http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -23,7 +21,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Database Connection
 connectDB()
   .then(async () => {
     console.log('MongoDB Connected...');
@@ -37,12 +34,10 @@ connectDB()
     console.error('Database connection error:', err);
   });
 
-// Documentation route
 app.get('/docs', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'docs.html'));
 });
 
-// Root route
 app.get('/', (req, res) => {
   res.json({
     status: 'success',
@@ -67,115 +62,10 @@ app.get('/', (req, res) => {
   });
 });
 
-// API Test Routes
-app.post('/api-test/register', async (req, res) => {
-  try {
-    const response = await fetch(`${process.env.BASE_URL}/api/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body)
-    });
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.post('/api-test/login', async (req, res) => {
-  try {
-    const response = await fetch(`${process.env.BASE_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body)
-    });
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.get('/api-test/profile', async (req, res) => {
-  try {
-    const response = await fetch(`${process.env.BASE_URL}/api/auth/profile`, {
-      headers: { 
-        'Authorization': req.headers.authorization
-      }
-    });
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.post('/api-test/quiz', async (req, res) => {
-  try {
-    const response = await fetch(`${process.env.BASE_URL}/api/quiz/submit`, {
-      method: 'POST',
-      headers: { 
-        'Authorization': req.headers.authorization,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(req.body)
-    });
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.get('/api-test/quiz/history', async (req, res) => {
-  try {
-    const response = await fetch(`${process.env.BASE_URL}/api/quiz/history`, {
-      headers: { 
-        'Authorization': req.headers.authorization
-      }
-    });
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.get('/api-test/products/recommendations', async (req, res) => {
-  try {
-    const url = `${process.env.BASE_URL}/api/products/recommendations${req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''}`;
-    const response = await fetch(url, {
-      headers: { 
-        'Authorization': req.headers.authorization
-      }
-    });
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.get('/api-test/products', async (req, res) => {
-  try {
-    let url = `${process.env.BASE_URL}/api/products`;
-    if (Object.keys(req.query).length > 0) {
-      url += '?' + new URLSearchParams(req.query).toString();
-    }
-    const response = await fetch(url);
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Main API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/products', productRoutes);
 
-// Error Handling Routes
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(err.status || 500).json({
@@ -184,7 +74,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Catch-all route untuk 404
 app.use('*', (req, res) => {
   res.status(404).json({
     status: 'error',
