@@ -67,15 +67,10 @@ app.get('/', (req, res) => {
   });
 });
 
-// Main API Routes (sebelum API test routes)
-app.use('/api/auth', authRoutes);
-app.use('/api/quiz', quizRoutes);
-app.use('/api/products', productRoutes);
-
-// API Test Routes
+// API Test Routes (pindah sebelum main routes)
 app.post('/api-test/register', async (req, res) => {
   try {
-    const response = await fetch(`${req.protocol}://${req.get('host')}/api/auth/register`, {
+    const response = await fetch(`${process.env.BASE_URL}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req.body)
@@ -89,7 +84,7 @@ app.post('/api-test/register', async (req, res) => {
 
 app.post('/api-test/login', async (req, res) => {
   try {
-    const response = await fetch(`${req.protocol}://${req.get('host')}/api/auth/login`, {
+    const response = await fetch(`${process.env.BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req.body)
@@ -103,7 +98,7 @@ app.post('/api-test/login', async (req, res) => {
 
 app.get('/api-test/profile', async (req, res) => {
   try {
-    const response = await fetch(`${req.protocol}://${req.get('host')}/api/auth/profile`, {
+    const response = await fetch(`${process.env.BASE_URL}/api/auth/profile`, {
       headers: { 
         'Authorization': req.headers.authorization
       }
@@ -117,7 +112,7 @@ app.get('/api-test/profile', async (req, res) => {
 
 app.post('/api-test/quiz', async (req, res) => {
   try {
-    const response = await fetch(`${req.protocol}://${req.get('host')}/api/quiz/submit`, {
+    const response = await fetch(`${process.env.BASE_URL}/api/quiz/submit`, {
       method: 'POST',
       headers: { 
         'Authorization': req.headers.authorization,
@@ -134,7 +129,7 @@ app.post('/api-test/quiz', async (req, res) => {
 
 app.get('/api-test/quiz/history', async (req, res) => {
   try {
-    const response = await fetch(`${req.protocol}://${req.get('host')}/api/quiz/history`, {
+    const response = await fetch(`${process.env.BASE_URL}/api/quiz/history`, {
       headers: { 
         'Authorization': req.headers.authorization
       }
@@ -148,7 +143,7 @@ app.get('/api-test/quiz/history', async (req, res) => {
 
 app.get('/api-test/products/recommendations', async (req, res) => {
   try {
-    const url = `${req.protocol}://${req.get('host')}/api/products/recommendations${req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''}`;
+    const url = `${process.env.BASE_URL}/api/products/recommendations${req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''}`;
     const response = await fetch(url, {
       headers: { 
         'Authorization': req.headers.authorization
@@ -163,7 +158,7 @@ app.get('/api-test/products/recommendations', async (req, res) => {
 
 app.get('/api-test/products', async (req, res) => {
   try {
-    let url = `${req.protocol}://${req.get('host')}/api/products`;
+    let url = `${process.env.BASE_URL}/api/products`;
     if (Object.keys(req.query).length > 0) {
       url += '?' + new URLSearchParams(req.query).toString();
     }
@@ -175,19 +170,25 @@ app.get('/api-test/products', async (req, res) => {
   }
 });
 
-// Error Handling Routes (tetap di paling bawah)
-app.use('*', (req, res) => {
-  res.status(404).json({
-    status: 'error',
-    message: 'Route not found'
-  });
-});
+// Main API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/quiz', quizRoutes);
+app.use('/api/products', productRoutes);
 
+// Error Handling Routes
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(err.status || 500).json({
     status: 'error',
     message: err.message || 'Internal Server Error'
+  });
+});
+
+// Catch-all route untuk 404 (harus di paling bawah)
+app.use('*', (req, res) => {
+  res.status(404).json({
+    status: 'error',
+    message: 'Route not found'
   });
 });
 
