@@ -67,6 +67,26 @@
                    <p class="mb-2"><span class="font-bold">Headers:</span> Authorization: Bearer token</p>
                </div>
            </div>
+
+           <!-- Update Profile -->
+           <div class="mb-6">
+               <h3 class="text-lg font-semibold mb-2">Update Profile</h3>
+               <div class="bg-gray-100 p-4 rounded">
+                   <p class="mb-2"><span class="font-bold">URL:</span> /api/auth/profile</p>
+                   <p class="mb-2"><span class="font-bold">Method:</span> PUT</p>
+                   <p class="mb-2"><span class="font-bold">Headers:</span> Authorization: Bearer token</p>
+                   <div class="mb-2">
+                       <span class="font-bold">Request Body:</span>
+                       <pre class="bg-gray-200 p-2 rounded mt-1">
+{
+ "username": "string (optional)",
+ "email": "string (optional)",
+ "currentPassword": "string (required for password change)",
+ "newPassword": "string (optional)"
+}</pre>
+                   </div>
+               </div>
+           </div>
        </div>
 
        <!-- Quiz Endpoints -->
