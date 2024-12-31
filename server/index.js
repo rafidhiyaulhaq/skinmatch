@@ -10,8 +10,8 @@ const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes'); 
 const quizRoutes = require('./routes/quizRoutes');
 const Product = require('./models/Product');
+const fetch = require('node-fetch');
 
-// CORS setup
 app.use(cors({
   origin: ['https://skinmatch-five.vercel.app', 'http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -19,12 +19,10 @@ app.use(cors({
   credentials: true
 }));
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Connect Database and Seed
 connectDB()
   .then(async () => {
     console.log('MongoDB Connected...');
@@ -38,26 +36,34 @@ connectDB()
     console.error('Database connection error:', err);
   });
 
-// Documentation route
 app.get('/docs', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'docs.html'));
 });
 
-// Health check route
 app.get('/', (req, res) => {
   res.json({
     status: 'success',
     message: 'Welcome to SkinMatch API',
     timestamp: new Date().toISOString(),
     endpoints: {
-      auth: ['/api/auth/register', '/api/auth/login'],
-      quiz: ['/api/quiz/submit', '/api/quiz/history'],
-      products: ['/api/products/recommendations', '/api/products']
+      auth: [
+        '/api/auth/register',
+        '/api/auth/login',
+        '/api/auth/profile', // GET method
+        '/api/auth/profile'  // PUT method
+      ],
+      quiz: [
+        '/api/quiz/submit',
+        '/api/quiz/history'
+      ],
+      products: [
+        '/api/products/recommendations',
+        '/api/products'
+      ]
     }
   });
 });
 
-// API Testing Routes
 app.post('/api-test/register', async (req, res) => {
   try {
     const response = await fetch(`${req.protocol}://${req.get('host')}/api/auth/register`, {
@@ -131,12 +137,10 @@ app.get('/api-test/products', async (req, res) => {
   }
 });
 
-// Mount routes
 app.use('/api/auth', authRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/products', productRoutes);
 
-// Error handling untuk route yang tidak ditemukan
 app.use('*', (req, res) => {
   res.status(404).json({
     status: 'error',
@@ -144,7 +148,6 @@ app.use('*', (req, res) => {
   });
 });
 
-// Global error handling
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(err.status || 500).json({
