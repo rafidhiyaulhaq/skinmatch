@@ -93,3 +93,63 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: 'Terjadi kesalahan pada server' });
   }
 };
+
+// Tambahkan fungsi baru untuk profile
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User tidak ditemukan' });
+    }
+    res.json(user);
+  } catch (err) {
+    console.error('Get profile error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { username, email, currentPassword, newPassword } = req.body;
+
+    // Cek user exists
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User tidak ditemukan' });
+    }
+
+    // Jika ada update password
+    if (currentPassword && newPassword) {
+      // Verifikasi password lama
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: 'Password saat ini tidak valid' });
+      }
+
+      // Hash password baru
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(newPassword, salt);
+    }
+
+    // Update data lain
+    if (username) user.username = username;
+    if (email) {
+      // Cek email sudah dipakai atau belum
+      const existingUser = await User.findOne({ email, _id: { $ne: req.userId } });
+      if (existingUser) {
+        return res.status(400).json({ message: 'Email sudah digunakan' });
+      }
+      user.email = email;
+    }
+
+    await user.save();
+
+    // Return user tanpa password
+    const updatedUser = await User.findById(req.userId).select('-password');
+    res.json(updatedUser);
+
+  } catch (err) {
+    console.error('Update profile error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

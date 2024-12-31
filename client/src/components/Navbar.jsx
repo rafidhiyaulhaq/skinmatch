@@ -18,7 +18,8 @@ function Navbar() {
             {token ? (
               <>
                 <Link to="/quiz" className="text-gray-700 hover:text-gray-900">Quiz</Link>
-                <button 
+                <Link to="/profile" className="text-gray-700 hover:text-gray-900">Profile</Link>
+                <button
                   onClick={handleLogout}
                   className="text-gray-700 hover:text-gray-900"
                 >

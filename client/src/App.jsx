@@ -6,6 +6,7 @@ import Results from './pages/Results';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoute from './components/PrivateRoute';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -30,6 +31,14 @@ function App() {
               <Results />
             </PrivateRoute>
           } 
+        />
+        <Route 
+        path="/profile" 
+        element={
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        } 
         />
       </Routes>
     </Router>
