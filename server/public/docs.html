@@ -314,7 +314,7 @@
             responseDiv.classList.remove('hidden');
 
             try {
-                let url = `${baseUrl}/api-test`;
+                let url;
                 let options = {
                     headers: {
                         'Content-Type': 'application/json'
@@ -323,7 +323,7 @@
 
                 switch(currentEndpoint) {
                     case 'register':
-                        url += '/register';
+                        url = `${baseUrl}/api-test/register`;
                         options.method = 'POST';
                         options.body = JSON.stringify({
                             username: document.getElementById('username').value,
@@ -333,7 +333,7 @@
                         break;
 
                     case 'login':
-                        url += '/login';
+                        url = `${baseUrl}/api-test/login`;
                         options.method = 'POST';
                         options.body = JSON.stringify({
                             email: document.getElementById('email').value,
@@ -342,34 +342,33 @@
                         break;
 
                     case 'profile':
-                        url += '/profile';
+                        url = `${baseUrl}/api-test/profile`;
                         options.method = 'GET';
                         options.headers.Authorization = document.getElementById('token').value;
                         break;
 
                     case 'submitQuiz':
-                        url += '/quiz';
+                        url = `${baseUrl}/api-test/quiz`;
                         options.method = 'POST';
                         options.headers.Authorization = document.getElementById('token').value;
                         options.body = document.getElementById('answers').value;
                         break;
 
                     case 'quizHistory':
-                        url += '/quiz/history';
+                        url = `${baseUrl}/api-test/quiz/history`;
                         options.method = 'GET';
                         options.headers.Authorization = document.getElementById('token').value;
                         break;
 
                     case 'recommendations':
-                        url += '/products/recommendations';
+                        url = `${baseUrl}/api-test/products/recommendations`;
                         options.method = 'GET';
                         options.headers.Authorization = document.getElementById('token').value;
-                        const skinType = document.getElementById('skinType').value;
-                        url += `?skinType=${skinType}`;
+                        url += `?skinType=${document.getElementById('skinType').value}`;
                         break;
 
                     case 'products':
-                        url += '/products';
+                        url = `${baseUrl}/api-test/products`;
                         options.method = 'GET';
                         const params = new URLSearchParams();
                         const category = document.getElementById('category').value;
@@ -383,7 +382,7 @@
                         if (maxPrice) params.append('maxPrice', maxPrice);
 
                         if (params.toString()) {
-                            url += '?' + params.toString();
+                            url += `?${params.toString()}`;
                         }
                         break;
                 }
@@ -401,5 +400,5 @@
             }
         }
     </script>
-</body>
-</html>
+    </body>
+    </html>

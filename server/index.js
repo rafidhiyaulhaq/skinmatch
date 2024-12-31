@@ -67,6 +67,11 @@ app.get('/', (req, res) => {
   });
 });
 
+// Main API Routes (sebelum API test routes)
+app.use('/api/auth', authRoutes);
+app.use('/api/quiz', quizRoutes);
+app.use('/api/products', productRoutes);
+
 // API Test Routes
 app.post('/api-test/register', async (req, res) => {
   try {
@@ -143,7 +148,8 @@ app.get('/api-test/quiz/history', async (req, res) => {
 
 app.get('/api-test/products/recommendations', async (req, res) => {
   try {
-    const response = await fetch(`${req.protocol}://${req.get('host')}/api/products/recommendations${req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''}`, {
+    const url = `${req.protocol}://${req.get('host')}/api/products/recommendations${req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''}`;
+    const response = await fetch(url, {
       headers: { 
         'Authorization': req.headers.authorization
       }
@@ -169,12 +175,7 @@ app.get('/api-test/products', async (req, res) => {
   }
 });
 
-// Main API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/quiz', quizRoutes);
-app.use('/api/products', productRoutes);
-
-// Error Handling Routes
+// Error Handling Routes (tetap di paling bawah)
 app.use('*', (req, res) => {
   res.status(404).json({
     status: 'error',
@@ -190,7 +191,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Server Start
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, '0.0.0.0', () => {
