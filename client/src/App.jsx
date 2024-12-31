@@ -5,6 +5,7 @@ import Quiz from './pages/Quiz';
 import Results from './pages/Results';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -12,10 +13,24 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/quiz" element={<Quiz />} />
-        <Route path="/results" element={<Results />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route 
+          path="/quiz" 
+          element={
+            <PrivateRoute>
+              <Quiz />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/results" 
+          element={
+            <PrivateRoute>
+              <Results />
+            </PrivateRoute>
+          } 
+        />
       </Routes>
     </Router>
   );

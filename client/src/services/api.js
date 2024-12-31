@@ -13,20 +13,23 @@ const api = axios.create({
 
 // Add token to requests if it exists
 api.interceptors.request.use((config) => {
- const token = localStorage.getItem('token');
- if (token) {
-   config.headers.Authorization = `Bearer ${token}`;
- }
- return config;
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
-// Add error handling interceptor
 api.interceptors.response.use(
- (response) => response,
- (error) => {
-   console.error('API Error:', error.response?.data || error.message);
-   return Promise.reject(error);
- }
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token expired atau invalid
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
 );
 
 // Auth services
