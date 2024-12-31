@@ -7,7 +7,7 @@ const products = [
       skinType: ["oily"],
       price: 250000,
       description: "Pembersih wajah dengan Salicylic Acid untuk kulit berminyak",
-      imageUrl: "https://www.laroche-posay.us/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-acd-laroche-posay-master-catalog/default/dw1480dc13/img/883140040231/883140040231_Effaclar-medicated-cleanser_1500x1500.jpg?sw=930&sh=930&sm=cut&sfrm=jpg&q=70",
+      imageUrl: "https://m.media-amazon.com/images/I/31blEnDdwIL._SY445_SX342_QL70_FMwebp_.jpg",
       ingredients: ["Salicylic Acid", "Zinc", "Glycerin"],
       rating: 4.3
     },
@@ -29,7 +29,7 @@ const products = [
       skinType: ["oily"],
       price: 180000,
       description: "Toner dengan Niacinamide untuk mengontrol minyak",
-      imageUrl: "https://theordinary.com/dw/image/v2/BFKJ_PRD/on/demandware.static/-/Sites-deciem-master/default/dw8b57fa2b/Images/products/The%20Ordinary/ord-glyc-acid-7pct-100ml-Aug-UPC.png?sw=1200&sh=1200&sm=fit",
+      imageUrl: "https://id.ozcosmetics.com/prodimgs/202208/278438.jpg",
       ingredients: ["Niacinamide", "Zinc PCA"],
       rating: 4.5
     },
@@ -42,7 +42,7 @@ const products = [
       skinType: ["dry"],
       price: 200000,
       description: "Pembersih wajah lembut dengan ceramide",
-      imageUrl: "https://www.cerave.co.id/-/media/project/loreal/brand-sites/cerave/americas/id/scx/product/pdp/packshots/hydrating-cleanser/hydrating-cleanser-473ml-lg.jpg?rev=-1?w=500&hash=F8EFBEFBD21ECBAFBB90DD491B16B130",
+      imageUrl: "https://static.beautytocare.com/cdn-cgi/image/f=auto/media/catalog/product/c/e/cerave-hydrating-cleanser-normal-to-dry-skin-236ml_1.jpg",
       ingredients: ["Ceramides", "Hyaluronic Acid"],
       rating: 4.6
     },
@@ -77,7 +77,7 @@ const products = [
       skinType: ["combination"],
       price: 180000,
       description: "Pembersih wajah seimbang untuk kulit kombinasi",
-      imageUrl: "https://www.cetaphil.co.id/dw/image/v2/BGGN_PRD/on/demandware.static/-/Sites-galderma-id-m-catalog/default/dw2b8c22aa/Gentle_Skin_Cleanser/Cetaphil_GSC_500mL%20Desktop.png?sw=900&sh=900&sm=fit&q=85",
+      imageUrl: "https://images-cdn.ubuy.co.id/6640d1b2d14b8e6e486d70c1-cetaphil-gentle-foaming-cleanser-face.jpg",
       ingredients: ["Glycerin", "Panthenol"],
       rating: 4.4
     },
@@ -99,7 +99,7 @@ const products = [
       skinType: ["combination"],
       price: 280000,
       description: "Toner menyeimbangkan untuk kulit kombinasi",
-      imageUrl: "https://www.paulaschoice.com/dw/image/v2/BBNX_PRD/on/demandware.static/-/Sites-pc-catalog/default/dwb26e4255/images/products/skin-balancing-pore-reducing-toner-1350-L_new.png?sw=360&sfrm=png",
+      imageUrl: "https://m.media-amazon.com/images/I/81uabH+wkpL._AC_UF1000,1000_QL80_.jpg",
       ingredients: ["Niacinamide", "Green Tea"],
       rating: 4.6
     },
@@ -112,7 +112,7 @@ const products = [
       skinType: ["normal"],
       price: 120000,
       description: "Pembersih wajah lembut untuk kulit normal",
-      imageUrl: "https://s3.ap-southeast-1.amazonaws.com/assets.femaledaily.com/remastering-data/production/product/product-1712587810320-simple-refreshing-facial-wash-gel",
+      imageUrl: "https://m.media-amazon.com/images/I/51qoAyXQGxL._AC_UF1000,1000_QL80_.jpg",
       ingredients: ["Chamomile", "Vitamin B5"],
       rating: 4.3
     },
@@ -123,7 +123,7 @@ const products = [
       skinType: ["normal"],
       price: 200000,
       description: "Pelembap sehari-hari untuk kulit normal",
-      imageUrl: "https://www.cetaphil.co.id/dw/image/v2/BGGN_PRD/on/demandware.static/-/Sites-galderma-id-m-catalog/default/dw05921f4e/Cetaphil_Daily_Facial_Moisturizer_SPF15/PA/Cetaphil%20Daily%20Facial%20Moisturizer%20SPF%2015_PA%20++.png?sw=900&sh=900&sm=fit&q=85",
+      imageUrl: "https://www.beautyhaul.com/assets/uploads/products/thumbs/800x800/Cetaphil_Daily_Facial_Moisturizer_SPF15_PA%2B%2B_118ml_%281%29.png",
       ingredients: ["Glycerin", "Vitamin E"],
       rating: 4.4
     },
@@ -147,7 +147,7 @@ const products = [
       skinType: ["sensitive"],
       price: 220000,
       description: "Pembersih wajah sangat lembut untuk kulit sensitif",
-      imageUrl: "https://www.aveneusa.com/media/catalog/product/t/o/tolerance_extremely_gentle_cleanser_200ml_011_clipped.png?quality=100&fit=bounds&height=1000&width=1000&canvas=1000:1000&dpr=2%202x",
+      imageUrl: "https://m.media-amazon.com/images/S/aplus-media-library-service-media/39b09da0-fed1-4eb5-80fa-c03b0cddad88.__CR0,0,800,600_PT0_SX800_V1___.png",
       ingredients: ["Thermal Spring Water", "Glycerin"],
       rating: 4.6
     },
@@ -158,7 +158,7 @@ const products = [
       skinType: ["sensitive"],
       price: 300000,
       description: "Pelembap menenangkan untuk kulit sensitif",
-      imageUrl: "https://www.firstaidbeauty.com/cdn/shop/files/UltraRepairFaceMoisturizer.jpg?v=1717168349&width=1426",
+      imageUrl: "https://m.media-amazon.com/images/I/61BSynl2O2L.jpg",
       ingredients: ["Colloidal Oatmeal", "Allantoin"],
       rating: 4.7
     },
@@ -169,7 +169,7 @@ const products = [
       skinType: ["sensitive"],
       price: 200000,
       description: "Toner menenangkan untuk kulit sensitif",
-      imageUrl: "https://image.femaledaily.com/dyn/210/images/prod-pics/product_1579170847_Klairs_Sup_800x800.jpg",
+      imageUrl: "https://m.media-amazon.com/images/I/61K2fOs4y-S._AC_UF1000,1000_QL80_.jpg",
       ingredients: ["Centella Asiatica", "Panthenol"],
       rating: 4.5
     }

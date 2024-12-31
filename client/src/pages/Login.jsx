@@ -15,11 +15,11 @@ function Login() {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-
     try {
       const response = await authService.login(formData);
       localStorage.setItem('token', response.token);
-      navigate('/quiz');
+      // Ubah navigasi ke home
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Login gagal');
       setFormData(prev => ({

@@ -36,7 +36,8 @@ function Register() {
       const { confirmPassword, ...registerData } = formData;
       const response = await authService.register(registerData);
       localStorage.setItem('token', response.token);
-      navigate('/quiz');
+      // Ubah navigasi ke home
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Registrasi gagal');
       // Clear password fields on error
