@@ -52,8 +52,8 @@ app.get('/', (req, res) => {
       auth: [
         '/api/auth/register',
         '/api/auth/login',
-        '/api/auth/profile', // GET method
-        '/api/auth/profile'  // PUT method
+        '/api/auth/profile',
+        '/api/auth/profile'
       ],
       quiz: [
         '/api/quiz/submit',
@@ -67,7 +67,7 @@ app.get('/', (req, res) => {
   });
 });
 
-// API Test Routes (pindah sebelum main routes)
+// API Test Routes
 app.post('/api-test/register', async (req, res) => {
   try {
     const response = await fetch(`${process.env.BASE_URL}/api/auth/register`, {
@@ -184,7 +184,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Catch-all route untuk 404 (harus di paling bawah)
+// Catch-all route untuk 404
 app.use('*', (req, res) => {
   res.status(404).json({
     status: 'error',
