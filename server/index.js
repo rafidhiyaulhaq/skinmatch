@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 const connectDB = require('./config/db');
 const seedProducts = require('./seed/products');
@@ -21,6 +22,7 @@ app.use(cors({
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect Database and Seed
 connectDB()
@@ -36,6 +38,11 @@ connectDB()
     console.error('Database connection error:', err);
   });
 
+// Documentation route
+app.get('/docs', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'docs.html'));
+});
+
 // Health check route
 app.get('/', (req, res) => {
   res.json({
@@ -48,6 +55,80 @@ app.get('/', (req, res) => {
       products: ['/api/products/recommendations', '/api/products']
     }
   });
+});
+
+// API Testing Routes
+app.post('/api-test/register', async (req, res) => {
+  try {
+    const response = await fetch(`${req.protocol}://${req.get('host')}/api/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body)
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api-test/login', async (req, res) => {
+  try {
+    const response = await fetch(`${req.protocol}://${req.get('host')}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body)
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api-test/profile', async (req, res) => {
+  try {
+    const response = await fetch(`${req.protocol}://${req.get('host')}/api/auth/profile`, {
+      headers: { 
+        'Authorization': req.headers.authorization
+      }
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api-test/quiz', async (req, res) => {
+  try {
+    const response = await fetch(`${req.protocol}://${req.get('host')}/api/quiz/submit`, {
+      method: 'POST',
+      headers: { 
+        'Authorization': req.headers.authorization,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(req.body)
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api-test/products', async (req, res) => {
+  try {
+    let url = `${req.protocol}://${req.get('host')}/api/products`;
+    if (Object.keys(req.query).length > 0) {
+      url += '?' + new URLSearchParams(req.query).toString();
+    }
+    const response = await fetch(url);
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Mount routes

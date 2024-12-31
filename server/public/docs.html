@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkinMatch API Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <h1 class="text-2xl font-bold">SkinMatch API Documentation</h1>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-4">
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">Base URL</h2>
+            <code class="bg-gray-100 p-2 rounded">https://skinmatch.up.railway.app</code>
+        </div>
+
+        <!-- Auth Endpoints -->
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">Authentication Endpoints</h2>
+            
+            <!-- Register -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-2">Register</h3>
+                <div class="bg-gray-100 p-4 rounded">
+                    <p class="mb-2"><span class="font-bold">URL:</span> /api/auth/register</p>
+                    <p class="mb-2"><span class="font-bold">Method:</span> POST</p>
+                    <div class="mb-2">
+                        <span class="font-bold">Request Body:</span>
+                        <pre class="bg-gray-200 p-2 rounded mt-1">
+{
+  "username": "string",
+  "email": "string",
+  "password": "string"
+}</pre>
+                    </div>
+                    <button onclick="tryEndpoint('register')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Try it</button>
+                </div>
+            </div>
+
+            <!-- Login -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-2">Login</h3>
+                <div class="bg-gray-100 p-4 rounded">
+                    <p class="mb-2"><span class="font-bold">URL:</span> /api/auth/login</p>
+                    <p class="mb-2"><span class="font-bold">Method:</span> POST</p>
+                    <div class="mb-2">
+                        <span class="font-bold">Request Body:</span>
+                        <pre class="bg-gray-200 p-2 rounded mt-1">
+{
+  "email": "string",
+  "password": "string"
+}</pre>
+                    </div>
+                    <button onclick="tryEndpoint('login')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Try it</button>
+                </div>
+            </div>
+
+            <!-- Profile -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-2">Get Profile</h3>
+                <div class="bg-gray-100 p-4 rounded">
+                    <p class="mb-2"><span class="font-bold">URL:</span> /api/auth/profile</p>
+                    <p class="mb-2"><span class="font-bold">Method:</span> GET</p>
+                    <p class="mb-2"><span class="font-bold">Headers:</span> Authorization: Bearer token</p>
+                    <button onclick="tryEndpoint('profile')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Try it</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Endpoints -->
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">Quiz Endpoints</h2>
+            
+            <!-- Submit Quiz -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-2">Submit Quiz</h3>
+                <div class="bg-gray-100 p-4 rounded">
+                    <p class="mb-2"><span class="font-bold">URL:</span> /api/quiz/submit</p>
+                    <p class="mb-2"><span class="font-bold">Method:</span> POST</p>
+                    <p class="mb-2"><span class="font-bold">Headers:</span> Authorization: Bearer token</p>
+                    <div class="mb-2">
+                        <span class="font-bold">Request Body:</span>
+                        <pre class="bg-gray-200 p-2 rounded mt-1">
+{
+  "answers": {
+    "oiliness": "string",
+    "dryness": "string",
+    "sensitivity": "string",
+    "pores": "string",
+    "acne": "string"
+  }
+}</pre>
+                    </div>
+                    <button onclick="tryEndpoint('submitQuiz')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Try it</button>
+                </div>
+            </div>
+
+            <!-- Quiz History -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-2">Get Quiz History</h3>
+                <div class="bg-gray-100 p-4 rounded">
+                    <p class="mb-2"><span class="font-bold">URL:</span> /api/quiz/history</p>
+                    <p class="mb-2"><span class="font-bold">Method:</span> GET</p>
+                    <p class="mb-2"><span class="font-bold">Headers:</span> Authorization: Bearer token</p>
+                    <button onclick="tryEndpoint('quizHistory')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Try it</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Endpoints -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">Products Endpoints</h2>
+            
+            <!-- Get Recommendations -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-2">Get Recommendations</h3>
+                <div class="bg-gray-100 p-4 rounded">
+                    <p class="mb-2"><span class="font-bold">URL:</span> /api/products/recommendations</p>
+                    <p class="mb-2"><span class="font-bold">Method:</span> GET</p>
+                    <p class="mb-2"><span class="font-bold">Headers:</span> Authorization: Bearer token</p>
+                    <p class="mb-2"><span class="font-bold">Query:</span> skinType=string</p>
+                    <button onclick="tryEndpoint('recommendations')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Try it</button>
+                </div>
+            </div>
+
+            <!-- Get All Products -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-2">Get All Products</h3>
+                <div class="bg-gray-100 p-4 rounded">
+                    <p class="mb-2"><span class="font-bold">URL:</span> /api/products</p>
+                    <p class="mb-2"><span class="font-bold">Method:</span> GET</p>
+                    <p class="mb-2"><span class="font-bold">Query Parameters:</span></p>
+                    <ul class="list-disc ml-6 mb-2">
+                        <li>category (optional)</li>
+                        <li>brand (optional)</li>
+                        <li>minPrice (optional)</li>
+                        <li>maxPrice (optional)</li>
+                    </ul>
+                    <button onclick="tryEndpoint('products')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Try it</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for trying endpoints -->
+    <div id="endpointModal" class="fixed inset-0 bg-black bg-opacity-50 hidden">
+        <div class="bg-white rounded-lg max-w-2xl mx-auto mt-20 p-6">
+            <h3 class="text-xl font-bold mb-4" id="modalTitle">Try Endpoint</h3>
+            <div id="modalContent"></div>
+            <div class="mt-4 flex justify-end">
+                <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Close</button>
+                <button onclick="sendRequest()" class="bg-blue-500 text-white px-4 py-2 rounded">Send Request</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseUrl = 'https://skinmatch.up.railway.app';
+        let currentEndpoint = '';
+        
+        function tryEndpoint(endpoint) {
+            currentEndpoint = endpoint;
+            const modal = document.getElementById('endpointModal');
+            const modalContent = document.getElementById('modalContent');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            modal.classList.remove('hidden');
+            
+            // Generate form based on endpoint
+            let content = '';
+            switch(endpoint) {
+                case 'register':
+                    modalTitle.textContent = 'Register New User';
+                    content = `
+                        <div class="mb-4">
+                            <label class="block mb-2">Username:</label>
+                            <input type="text" id="username" class="w-full border p-2 rounded">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block mb-2">Email:</label>
+                            <input type="email" id="email" class="w-full border p-2 rounded">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block mb-2">Password:</label>
+                            <input type="password" id="password" class="w-full border p-2 rounded">
+                        </div>
+                    `;
+                    break;
+                // Add other cases for different endpoints
+            }
+            
+            modalContent.innerHTML = content;
+        }
+        
+        function closeModal() {
+            document.getElementById('endpointModal').classList.add('hidden');
+        }
+        
+        async function sendRequest() {
+            // Implementation of sending requests
+            // This will vary based on the endpoint
+        }
+    </script>
+</body>
+</html>
