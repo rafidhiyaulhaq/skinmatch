@@ -174,3 +174,21 @@ const products = [
       rating: 4.5
     }
   ];
+
+
+
+async function seedProducts(Product) {
+  try {
+    // Hapus data lama
+    await Product.deleteMany({});
+    
+    // Insert data baru
+    await Product.insertMany(products);
+    console.log('Products seeded successfully');
+  } catch (error) {
+    console.error('Error seeding products:', error);
+    throw error;
+  }
+}
+
+module.exports = seedProducts;

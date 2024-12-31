@@ -2,13 +2,13 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./config/db');
+const seedProducts = require('./seed/products');
 
 const app = express();
 const productRoutes = require('./routes/productRoutes');
-const { seedProducts } = require('./seed/products');
 const Product = require('./models/Product');
 
-// CORS setup - lebih lengkap dan spesifik
+// CORS setup
 app.use(cors({
   origin: ['https://skinmatch-five.vercel.app', 'http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -17,24 +17,19 @@ app.use(cors({
   preflightContinue: true
 }));
 
-// Connect Database
-connectDB();
-connectDB().then(async () => {
+// Connect Database and Seed
+connectDB()
+  .then(async () => {
     console.log('MongoDB Connected...');
     try {
-      // Force seed products
       await seedProducts(Product);
-      console.log('Products seeded successfully');
     } catch (error) {
       console.error('Seeding error:', error);
     }
+  })
+  .catch(err => {
+    console.error('Database connection error:', err);
   });
-
-if (process.env.NODE_ENV !== 'production') {
-    seedProducts(Product).then(() => {
-      console.log('Seeding completed');
-    });
-  }
 
 // Middleware
 app.use(express.json());
