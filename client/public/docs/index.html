@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>SkinMatch Frontend Documentation</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+   <nav class="bg-white shadow-lg">
+       <div class="max-w-6xl mx-auto px-4 py-3">
+           <h1 class="text-2xl font-bold">SkinMatch Frontend Documentation</h1>
+           <p class="text-gray-600">GitHub Repository: <a href="https://github.com/rafidhiyaulhaq/skinmatch" class="text-blue-600 hover:underline">https://github.com/rafidhiyaulhaq/skinmatch</a></p>
+       </div>
+   </nav>
+
+   <main class="max-w-6xl mx-auto p-4">
+       <div class="bg-white shadow rounded-lg p-6 mb-6">
+           <h2 class="text-xl font-bold mb-4">Overview</h2>
+           <p>SkinMatch is a skincare recommendation application that analyzes user's skin type through a questionnaire and provides personalized product recommendations.</p>
+           <p class="mt-2">Live URL: <code class="bg-gray-100 p-1 rounded">https://skinmatch-five.vercel.app</code></p>
+       </div>
+
+       <div class="bg-white shadow rounded-lg p-6 mb-6">
+           <h2 class="text-xl font-bold mb-4">Features</h2>
+           <ul class="list-disc ml-6">
+               <li>User authentication (register/login)</li>
+               <li>Skin type analysis quiz</li>
+               <li>Personalized product recommendations</li>
+               <li>User profile management</li>
+               <li>Quiz history tracking</li>
+           </ul>
+       </div>
+
+       <div class="bg-white shadow rounded-lg p-6 mb-6">
+           <h2 class="text-xl font-bold mb-4">Tech Stack</h2>
+           <div class="grid md:grid-cols-2 gap-4">
+               <div>
+                   <h3 class="font-semibold mb-2">Frontend:</h3>
+                   <ul class="list-disc ml-6">
+                       <li>React 18</li>
+                       <li>Vite</li>
+                       <li>React Router v7</li>
+                       <li>Tailwind CSS</li>
+                       <li>Axios</li>
+                   </ul>
+               </div>
+               <div>
+                   <h3 class="font-semibold mb-2">Backend:</h3>
+                   <ul class="list-disc ml-6">
+                       <li>Node.js</li>
+                       <li>Express</li>
+                       <li>MongoDB</li>
+                       <li>JWT Authentication</li>
+                   </ul>
+               </div>
+           </div>
+       </div>
+
+       <div class="bg-white shadow rounded-lg p-6 mb-6">
+           <h2 class="text-xl font-bold mb-4">Installation</h2>
+           <pre class="bg-gray-100 p-4 rounded mb-4">
+# Clone repository
+git clone https://github.com/rafidhiyaulhaq/skinmatch.git
+
+# Frontend setup
+cd client
+npm install
+npm run dev
+
+# Backend setup
+cd ../server
+npm install
+npm run dev</pre>
+       </div>
+
+       <div class="bg-white shadow rounded-lg p-6 mb-6">
+           <h2 class="text-xl font-bold mb-4">Project Structure</h2>
+           <pre class="bg-gray-100 p-4 rounded">
+skinmatch/
+├── client/           # Frontend React application
+│   ├── public/       # Static files
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── utils/
+│   └── package.json
+│
+├── server/           # Backend Node.js application
+│   ├── config/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   └── index.js
+│
+└── README.md</pre>
+       </div>
+
+       <div class="bg-white shadow rounded-lg p-6 mb-6">
+           <h2 class="text-xl font-bold mb-4">Pages & Routes</h2>
+           <div class="space-y-4">
+               <div>
+                   <h3 class="font-semibold">Public Routes</h3>
+                   <ul class="list-disc ml-6">
+                       <li><code>/</code> - Home page</li>
+                       <li><code>/login</code> - User login</li>
+                       <li><code>/register</code> - User registration</li>
+                   </ul>
+               </div>
+               <div>
+                   <h3 class="font-semibold">Protected Routes</h3>
+                   <ul class="list-disc ml-6">
+                       <li><code>/quiz</code> - Skin analysis questionnaire</li>
+                       <li><code>/results</code> - Analysis results & recommendations</li>
+                       <li><code>/profile</code> - User profile management</li>
+                   </ul>
+               </div>
+           </div>
+       </div>
+
+       <div class="bg-white shadow rounded-lg p-6 mb-6">
+           <h2 class="text-xl font-bold mb-4">API Integration</h2>
+           <p>Backend API Documentation: <a href="https://skinmatch.up.railway.app/docs" class="text-blue-600 hover:underline">https://skinmatch.up.railway.app/docs</a></p>
+           <p class="mt-4">Available services (<code>src/services/api.js</code>):</p>
+           <ul class="list-disc ml-6 mt-2">
+               <li>Authentication (register, login, profile)</li>
+               <li>Quiz submission and history</li>
+               <li>Product recommendations</li>
+           </ul>
+       </div>
+
+       <div class="bg-white shadow rounded-lg p-6">
+           <h2 class="text-xl font-bold mb-4">Deployment</h2>
+           <div class="space-y-4">
+               <div>
+                   <h3 class="font-semibold">Frontend (Vercel)</h3>
+                   <ul class="list-disc ml-6">
+                       <li>URL: <code>https://skinmatch-five.vercel.app</code></li>
+                       <li>Build Command: <code>npm run build</code></li>
+                       <li>Output Directory: <code>dist</code></li>
+                   </ul>
+               </div>
+               <div>
+                   <h3 class="font-semibold">Backend (Railway)</h3>
+                   <ul class="list-disc ml-6">
+                       <li>URL: <code>https://skinmatch.up.railway.app</code></li>
+                       <li>Start Command: <code>npm start</code></li>
+                       <li>Environment: Node.js</li>
+                   </ul>
+               </div>
+           </div>
+       </div>
+   </main>
+</body>
+</html>
