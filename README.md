@@ -46,9 +46,11 @@ SkinMatch adalah aplikasi web yang membantu pengguna menganalisis tipe kulit mer
 ```bash
 git clone https://github.com/rafidhiyaulhaq/skinmatch.git
 cd skinmatch
+```
 
 ### Project Structure
 
+```bash
 skinmatch/
 ├── client/           # Frontend React application
 │   ├── public/       # Static files
@@ -64,4 +66,5 @@ skinmatch/
     ├── models/       # Database models
     ├── routes/       # API routes
     └── public/       # Static files & documentation
+```
 
