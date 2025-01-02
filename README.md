@@ -48,7 +48,7 @@ git clone https://github.com/rafidhiyaulhaq/skinmatch.git
 cd skinmatch
 ```
 
-### Project Structure
+## Tech Stack
 
 ```bash
 skinmatch/
