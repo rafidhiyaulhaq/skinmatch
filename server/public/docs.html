@@ -19,11 +19,38 @@
            <code class="bg-gray-100 p-2 rounded">https://skinmatch.up.railway.app</code>
        </div>
 
-       <!-- Auth Endpoints -->
+       <div class="bg-white shadow rounded-lg p-6 mb-6">
+           <h2 class="text-xl font-bold mb-4">External Services Integration</h2>
+           
+           <div class="mb-6">
+               <h3 class="text-lg font-semibold mb-2">FinTrackIt Email Service</h3>
+               <div class="bg-gray-100 p-4 rounded">
+                   <p class="mb-2"><span class="font-bold">Service Provider:</span> David Dewanto (18222027)</p>
+                   <p class="mb-2"><span class="font-bold">Base URL:</span> https://api.fintrackit.my.id/v1</p>
+                   <p class="mb-2"><span class="font-bold">Authentication:</span> API Key & Bearer Token</p>
+                   <div class="mb-4">
+                       <span class="font-bold">Endpoints:</span>
+                       <ul class="list-disc ml-6 mt-1">
+                           <li>/auth/token - Generate access token</li>
+                           <li>/secure/send-email - Send email notification</li>
+                       </ul>
+                   </div>
+                   <div class="mb-2">
+                       <span class="font-bold">Features:</span>
+                       <ul class="list-disc ml-6 mt-1">
+                           <li>Automated email notifications after quiz completion</li>
+                           <li>HTML email templates with personalized results</li>
+                           <li>Secure token-based authentication</li>
+                           <li>Automatic token refresh handling</li>
+                       </ul>
+                   </div>
+               </div>
+           </div>
+       </div>
+
        <div class="bg-white shadow rounded-lg p-6 mb-6">
            <h2 class="text-xl font-bold mb-4">Authentication Endpoints</h2>
            
-           <!-- Register -->
            <div class="mb-6">
                <h3 class="text-lg font-semibold mb-2">Register</h3>
                <div class="bg-gray-100 p-4 rounded">
@@ -33,15 +60,14 @@
                        <span class="font-bold">Request Body:</span>
                        <pre class="bg-gray-200 p-2 rounded mt-1">
 {
- "username": "string",
- "email": "string",
- "password": "string"
+    "username": "string",
+    "email": "string",
+    "password": "string"
 }</pre>
                    </div>
                </div>
            </div>
 
-           <!-- Login -->
            <div class="mb-6">
                <h3 class="text-lg font-semibold mb-2">Login</h3>
                <div class="bg-gray-100 p-4 rounded">
@@ -51,14 +77,13 @@
                        <span class="font-bold">Request Body:</span>
                        <pre class="bg-gray-200 p-2 rounded mt-1">
 {
- "email": "string",
- "password": "string"
+    "email": "string",
+    "password": "string"
 }</pre>
                    </div>
                </div>
            </div>
 
-           <!-- Profile -->
            <div class="mb-6">
                <h3 class="text-lg font-semibold mb-2">Get Profile</h3>
                <div class="bg-gray-100 p-4 rounded">
@@ -68,7 +93,6 @@
                </div>
            </div>
 
-           <!-- Update Profile -->
            <div class="mb-6">
                <h3 class="text-lg font-semibold mb-2">Update Profile</h3>
                <div class="bg-gray-100 p-4 rounded">
@@ -79,21 +103,19 @@
                        <span class="font-bold">Request Body:</span>
                        <pre class="bg-gray-200 p-2 rounded mt-1">
 {
- "username": "string (optional)",
- "email": "string (optional)",
- "currentPassword": "string (required for password change)",
- "newPassword": "string (optional)"
+    "username": "string (optional)",
+    "email": "string (optional)",
+    "currentPassword": "string (required for password change)",
+    "newPassword": "string (optional)"
 }</pre>
                    </div>
                </div>
            </div>
        </div>
 
-       <!-- Quiz Endpoints -->
        <div class="bg-white shadow rounded-lg p-6 mb-6">
            <h2 class="text-xl font-bold mb-4">Quiz Endpoints</h2>
            
-           <!-- Submit Quiz -->
            <div class="mb-6">
                <h3 class="text-lg font-semibold mb-2">Submit Quiz</h3>
                <div class="bg-gray-100 p-4 rounded">
@@ -104,19 +126,27 @@
                        <span class="font-bold">Request Body:</span>
                        <pre class="bg-gray-200 p-2 rounded mt-1">
 {
- "answers": {
-   "oiliness": "string",
-   "dryness": "string",
-   "sensitivity": "string",
-   "pores": "string",
-   "acne": "string"
- }
+    "answers": {
+        "oiliness": "string",
+        "dryness": "string",
+        "sensitivity": "string",
+        "pores": "string",
+        "acne": "string"
+    }
 }</pre>
+                   </div>
+                   <div class="mt-4">
+                       <span class="font-bold">Response Actions:</span>
+                       <ul class="list-disc ml-6 mt-1">
+                           <li>Analyzes skin type based on answers</li>
+                           <li>Generates product recommendations</li>
+                           <li>Sends email notification via FinTrackIt service</li>
+                           <li>Returns analysis results and recommendations</li>
+                       </ul>
                    </div>
                </div>
            </div>
 
-           <!-- Quiz History -->
            <div class="mb-6">
                <h3 class="text-lg font-semibold mb-2">Get Quiz History</h3>
                <div class="bg-gray-100 p-4 rounded">
@@ -127,11 +157,9 @@
            </div>
        </div>
 
-       <!-- Products Endpoints -->
        <div class="bg-white shadow rounded-lg p-6">
            <h2 class="text-xl font-bold mb-4">Products Endpoints</h2>
            
-           <!-- Get Recommendations -->
            <div class="mb-6">
                <h3 class="text-lg font-semibold mb-2">Get Recommendations</h3>
                <div class="bg-gray-100 p-4 rounded">
@@ -142,7 +170,6 @@
                </div>
            </div>
 
-           <!-- Get All Products -->
            <div class="mb-6">
                <h3 class="text-lg font-semibold mb-2">Get All Products</h3>
                <div class="bg-gray-100 p-4 rounded">
