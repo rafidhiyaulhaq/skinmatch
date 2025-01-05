@@ -4,7 +4,7 @@ const User = require('../models/User');
 const axios = require('axios');
 
 const FINTRACKIT_API = 'https://api.fintrackit.my.id/v1';
-const API_KEY = process.env.VITE_FINTRACKIT_API_KEY;
+const API_KEY = process.env.FINTRACKIT_API_KEY;
 
 let accessToken = null;
 let tokenExpiry = null;
