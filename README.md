@@ -1,6 +1,6 @@
 # SkinMatch
 
-SkinMatch adalah aplikasi web yang membantu pengguna menganalisis tipe kulit mereka dan memberikan rekomendasi produk skincare yang sesuai, dilengkapi dengan notifikasi email hasil analisis.
+SkinMatch merupakan aplikasi web yang membantu pengguna menganalisis tipe kulit mereka dan memberikan rekomendasi produk skincare yang sesuai, dilengkapi dengan notifikasi email hasil analisis.
 
 ## Live URLs
 - Frontend: https://skinmatch-five.vercel.app
