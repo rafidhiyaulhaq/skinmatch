@@ -7,23 +7,16 @@ const seedProducts = require('./seed/products');
 
 const app = express();
 const productRoutes = require('./routes/productRoutes');
-const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/authRoutes'); 
 const quizRoutes = require('./routes/quizRoutes');
 const Product = require('./models/Product');
 
 app.use(cors({
-  origin: [
-    'https://skinmatch-five.vercel.app', 
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'http://localhost:80'
-  ],
+  origin: ['https://skinmatch-five.vercel.app', 'http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  exposedHeaders: ['Access-Control-Allow-Origin']
+  credentials: true
 }));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
