@@ -17,22 +17,32 @@ const getAccessToken = async () => {
   try {
     const response = await axios.post(`${FINTRACKIT_API}/auth/token`, null, {
       headers: {
-        'X-API-Key': API_KEY
+        'X-API-Key': API_KEY,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       }
     });
+
+    if (!response.data || !response.data.access_token) {
+      throw new Error('Invalid token response');
+    }
 
     accessToken = response.data.access_token;
     tokenExpiry = Date.now() + (response.data.expires_in * 1000) - 300000;
     return accessToken;
   } catch (error) {
-    console.error('Error getting access token:', error);
-    throw error;
+    console.error('Error getting access token:', error.response?.data || error.message);
+    throw new Error('Failed to get access token');
   }
 };
 
 const sendEmail = async (recipientEmail, subject, body) => {
   try {
     const token = await getAccessToken();
+    if (!token) {
+      throw new Error('No access token available');
+    }
+
     const response = await axios.post(
       `${FINTRACKIT_API}/secure/send-email`,
       {
@@ -43,10 +53,16 @@ const sendEmail = async (recipientEmail, subject, body) => {
       {
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       }
     );
+
+    if (!response.data || !response.data.success) {
+      throw new Error('Email sending failed');
+    }
+
     return response.data;
   } catch (error) {
     if (error.response?.status === 401) {
@@ -64,16 +80,19 @@ const sendEmail = async (recipientEmail, subject, body) => {
           {
             headers: {
               'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
             }
           }
         );
         return response.data;
       } catch (retryError) {
-        throw retryError;
+        console.error('Email retry failed:', retryError.response?.data || retryError.message);
+        throw new Error('Failed to send email after token refresh');
       }
     }
-    throw error;
+    console.error('Email sending error:', error.response?.data || error.message);
+    throw new Error('Failed to send email');
   }
 };
 
@@ -186,8 +205,13 @@ const getTipsForSkinType = (skinType) => {
 exports.submitQuiz = async (req, res) => {
   try {
     const { answers } = req.body;
-    const userId = req.userId;
+    if (!answers) {
+      return res.status(400).json({
+        message: 'Quiz answers are required'
+      });
+    }
 
+    const userId = req.userId;
     const skinType = determineSkinType(answers);
     console.log('Determined skin type:', skinType);
 
@@ -201,6 +225,11 @@ exports.submitQuiz = async (req, res) => {
     console.log('Quiz result saved');
 
     const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found'
+      });
+    }
     console.log('Found user:', user.email);
 
     const recommendations = await Product.find({
@@ -220,7 +249,8 @@ exports.submitQuiz = async (req, res) => {
       );
       console.log('Email sent successfully to:', user.email);
     } catch (emailError) {
-      console.error('Failed to send email:', emailError);
+      console.error('Failed to send email:', emailError.message);
+      // Continue without email if sending fails
     }
 
     res.json({
