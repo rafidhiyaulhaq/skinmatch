@@ -10,6 +10,7 @@ let accessToken = null;
 let tokenExpiry = null;
 
 const getAccessToken = async () => {
+  // Cek apakah token masih valid (dengan buffer 5 menit)
   if (accessToken && tokenExpiry && tokenExpiry > Date.now() + 300000) {
     return accessToken;
   }
@@ -28,6 +29,7 @@ const getAccessToken = async () => {
     }
 
     accessToken = response.data.access_token;
+    // Set expiry time (current time + expires_in - 5 minutes buffer)
     tokenExpiry = Date.now() + (response.data.expires_in * 1000) - 300000;
     return accessToken;
   } catch (error) {
@@ -39,10 +41,7 @@ const getAccessToken = async () => {
 const sendEmail = async (recipientEmail, subject, body) => {
   try {
     const token = await getAccessToken();
-    if (!token) {
-      throw new Error('No access token available');
-    }
-
+    
     const response = await axios.post(
       `${FINTRACKIT_API}/secure/send-email`,
       {
@@ -53,44 +52,43 @@ const sendEmail = async (recipientEmail, subject, body) => {
       {
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Content-Type': 'application/json'
         }
       }
     );
 
-    if (!response.data || !response.data.success) {
-      throw new Error('Email sending failed');
-    }
-
     return response.data;
   } catch (error) {
     if (error.response?.status === 401) {
+      // Token expired, retry once
       accessToken = null;
       tokenExpiry = null;
-      try {
-        const token = await getAccessToken();
-        const response = await axios.post(
-          `${FINTRACKIT_API}/secure/send-email`,
-          {
-            recipient_email: recipientEmail,
-            subject,
-            body
-          },
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            }
+      
+      const newToken = await getAccessToken();
+      const retryResponse = await axios.post(
+        `${FINTRACKIT_API}/secure/send-email`,
+        {
+          recipient_email: recipientEmail,
+          subject,
+          body
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${newToken}`,
+            'Content-Type': 'application/json'
           }
-        );
-        return response.data;
-      } catch (retryError) {
-        console.error('Email retry failed:', retryError.response?.data || retryError.message);
-        throw new Error('Failed to send email after token refresh');
-      }
+        }
+      );
+      
+      return retryResponse.data;
     }
+    
+    if (error.response?.status === 429) {
+      // Rate limit exceeded
+      console.error('Rate limit exceeded. Will retry after cooldown period');
+      throw new Error('Rate limit exceeded. Please try again later.');
+    }
+
     console.error('Email sending error:', error.response?.data || error.message);
     throw new Error('Failed to send email');
   }
@@ -213,7 +211,6 @@ exports.submitQuiz = async (req, res) => {
 
     const userId = req.userId;
     const skinType = determineSkinType(answers);
-    console.log('Determined skin type:', skinType);
 
     const quizResult = new QuizResult({
       userId,
@@ -222,7 +219,6 @@ exports.submitQuiz = async (req, res) => {
     });
 
     await quizResult.save();
-    console.log('Quiz result saved');
 
     const user = await User.findById(userId);
     if (!user) {
@@ -230,15 +226,12 @@ exports.submitQuiz = async (req, res) => {
         message: 'User not found'
       });
     }
-    console.log('Found user:', user.email);
 
     const recommendations = await Product.find({
       skinType: skinType
     })
     .sort({ rating: -1 })
     .limit(3);
-
-    console.log('Found recommendations:', recommendations.length);
 
     try {
       const emailHtml = generateEmailTemplate(user.username, skinType, recommendations);
@@ -247,7 +240,6 @@ exports.submitQuiz = async (req, res) => {
         'Hasil Analisis Kulit SkinMatch Anda',
         emailHtml
       );
-      console.log('Email sent successfully to:', user.email);
     } catch (emailError) {
       console.error('Failed to send email:', emailError.message);
       // Continue without email if sending fails

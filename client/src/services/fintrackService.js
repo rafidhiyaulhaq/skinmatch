@@ -10,7 +10,7 @@ class FinTrackItService {
   }
 
   async getAccessToken() {
-    // Check if token exists and is not expired (with 5 minutes buffer)
+    // Check token validity (with 5 minutes buffer)
     if (this.accessToken && this.tokenExpiry && this.tokenExpiry > Date.now() + 300000) {
       return this.accessToken;
     }
@@ -18,7 +18,9 @@ class FinTrackItService {
     try {
       const response = await axios.post(`${FINTRACKIT_API}/auth/token`, null, {
         headers: {
-          'X-API-Key': API_KEY
+          'X-API-Key': API_KEY,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       });
 
@@ -37,19 +39,26 @@ class FinTrackItService {
     const token = await this.getAccessToken();
     return {
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     };
   }
 
   async testConnection() {
     try {
-      const token = await this.getAccessToken();
-      console.log('Successfully connected to FinTrackIt:', token ? 'Token received' : 'No token');
+      await this.getAccessToken();
       return true;
     } catch (error) {
       console.error('Failed to connect to FinTrackIt:', error);
       return false;
     }
+  }
+
+  // Rate limit handling
+  async handleRateLimit(retryAfter = 60000) {
+    return new Promise(resolve => {
+      setTimeout(resolve, retryAfter);
+    });
   }
 }
 
