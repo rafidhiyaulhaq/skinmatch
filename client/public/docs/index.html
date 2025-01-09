@@ -10,7 +10,7 @@
    <nav class="bg-white shadow-lg sticky top-0">
        <div class="max-w-6xl mx-auto px-4 py-3">
            <h1 class="text-2xl font-bold">SkinMatch Documentation</h1>
-           <p class="text-gray-600">Rafidhi Yaulhaq (18221038)</p>
+           <p class="text-gray-600">Muhammad Rafi Dhiyaulhaq (18222069)</p>
        </div>
    </nav>
 
@@ -53,43 +53,146 @@
            </div>
        </div>
 
-       <!-- Tech Stack -->
+       <!-- Container Implementation -->
        <div class="bg-white shadow rounded-lg p-6 mb-6">
-           <h2 class="text-xl font-bold mb-4">Teknologi yang Digunakan</h2>
-           <div class="grid md:grid-cols-3 gap-4">
+           <h2 class="text-xl font-bold mb-4">Implementasi Container</h2>
+           <div class="space-y-4">
                <div>
-                   <h3 class="font-semibold mb-2">Frontend:</h3>
+                   <h3 class="font-semibold">Bukti Implementasi Container:</h3>
+                   <div class="bg-gray-100 p-4 rounded mt-2">
+                       <p class="font-mono text-sm">Deploy Logs Railway:</p>
+                       <pre class="text-sm mt-2">
+Starting Container
+Server is running on port 8080
+MongoDB Connected...
+Products seeded successfully</pre>
+                   </div>
+                   
+                   <div class="bg-gray-100 p-4 rounded mt-4">
+                       <p class="font-mono text-sm">Build Logs Railway:</p>
+                       <pre class="text-sm mt-2">
+[builder 2/8] WORKDIR /app
+[3/5] COPY package*.json ./
+[4/5] RUN npm ci
+[5/5] COPY . .
+pushing layers
+pushing manifest for us-west1.registry.rlwy.net/...</pre>
+                   </div>
+               </div>
+
+               <div class="mt-4">
+                   <h3 class="font-semibold">Arsitektur Container:</h3>
                    <ul class="list-disc ml-6">
-                       <li>React 18</li>
-                       <li>React Router v7</li>
-                       <li>Tailwind CSS</li>
-                       <li>Vite</li>
-                       <li>Axios</li>
+                       <li>Frontend container (Nginx + React) - Dijalankan di Vercel</li>
+                       <li>Backend container (Node.js) - Dijalankan di Railway</li>
+                       <li>Database container (MongoDB) - MongoDB Atlas untuk production</li>
                    </ul>
                </div>
-               <div>
-                   <h3 class="font-semibold mb-2">Backend:</h3>
+
+               <div class="mt-4">
+                   <h3 class="font-semibold">Container Orchestration:</h3>
                    <ul class="list-disc ml-6">
-                       <li>Node.js</li>
-                       <li>Express.js</li>
-                       <li>MongoDB</li>
-                       <li>JWT Authentication</li>
-                   </ul>
-               </div>
-               <div>
-                   <h3 class="font-semibold mb-2">Deployment:</h3>
-                   <ul class="list-disc ml-6">
-                       <li>Docker</li>
-                       <li>Docker Compose</li>
-                       <li>Vercel (Frontend)</li>
-                       <li>Railway (Backend)</li>
+                       <li>Development: Docker Compose untuk menjalankan semua service</li>
+                       <li>Production: Railway Container Service untuk backend</li>
+                       <li>Automatic deployment saat ada push ke main branch</li>
                    </ul>
                </div>
            </div>
        </div>
 
-       <!-- Integration -->
+       <!-- API Documentation -->
        <div class="bg-white shadow rounded-lg p-6 mb-6">
+           <h2 class="text-xl font-bold mb-4">API Documentation</h2>
+
+           <div class="mb-6">
+               <h3 class="text-lg font-semibold mb-2">Authentication</h3>
+               
+               <div class="mb-4">
+                   <h4 class="font-medium">Register</h4>
+                   <div class="bg-gray-100 p-3 rounded mt-2">
+                       <p>POST /api/auth/register</p>
+                       <pre class="mt-2 text-sm">
+{
+    "username": "string",
+    "email": "string",
+    "password": "string"
+}</pre>
+                   </div>
+               </div>
+
+               <div class="mb-4">
+                   <h4 class="font-medium">Login</h4>
+                   <div class="bg-gray-100 p-3 rounded mt-2">
+                       <p>POST /api/auth/login</p>
+                       <pre class="mt-2 text-sm">
+{
+    "email": "string",
+    "password": "string"
+}</pre>
+                   </div>
+               </div>
+
+               <div class="mb-4">
+                   <h4 class="font-medium">Get Profile</h4>
+                   <div class="bg-gray-100 p-3 rounded mt-2">
+                       <p>GET /api/auth/profile</p>
+                       <p class="mt-2 text-sm">Headers: Authorization: Bearer token</p>
+                   </div>
+               </div>
+           </div>
+
+           <div class="mb-6">
+               <h3 class="text-lg font-semibold mb-2">Quiz</h3>
+               
+               <div class="mb-4">
+                   <h4 class="font-medium">Submit Quiz</h4>
+                   <div class="bg-gray-100 p-3 rounded mt-2">
+                       <p>POST /api/quiz/submit</p>
+                       <pre class="mt-2 text-sm">
+{
+    "answers": {
+        "oiliness": "string",
+        "dryness": "string",
+        "sensitivity": "string",
+        "pores": "string",
+        "acne": "string"
+    }
+}</pre>
+                   </div>
+               </div>
+
+               <div class="mb-4">
+                   <h4 class="font-medium">Get Quiz History</h4>
+                   <div class="bg-gray-100 p-3 rounded mt-2">
+                       <p>GET /api/quiz/history</p>
+                       <p class="mt-2 text-sm">Headers: Authorization: Bearer token</p>
+                   </div>
+               </div>
+           </div>
+
+           <div class="mb-6">
+               <h3 class="text-lg font-semibold mb-2">Products</h3>
+               
+               <div class="mb-4">
+                   <h4 class="font-medium">Get Recommendations</h4>
+                   <div class="bg-gray-100 p-3 rounded mt-2">
+                       <p>GET /api/products/recommendations?skinType=string</p>
+                       <p class="mt-2 text-sm">Headers: Authorization: Bearer token</p>
+                   </div>
+               </div>
+
+               <div class="mb-4">
+                   <h4 class="font-medium">Get All Products</h4>
+                   <div class="bg-gray-100 p-3 rounded mt-2">
+                       <p>GET /api/products</p>
+                       <p class="mt-2 text-sm">Query Parameters: category, brand, minPrice, maxPrice (all optional)</p>
+                   </div>
+               </div>
+           </div>
+       </div>
+
+       <!-- Integration -->
+       <div class="bg-white shadow rounded-lg p-6">
            <h2 class="text-xl font-bold mb-4">Integrasi Sistem</h2>
            <div class="mb-6">
                <h3 class="text-lg font-semibold mb-2">FinTrackIt Email Service</h3>
@@ -101,52 +204,8 @@
                        <li>Template HTML dengan konten yang dipersonalisasi</li>
                        <li>Autentikasi aman menggunakan API key</li>
                        <li>Autorisasi berbasis token</li>
-                   </ul>
-               </div>
-           </div>
-       </div>
-
-       <!-- Container Implementation -->
-       <div class="bg-white shadow rounded-lg p-6 mb-6">
-           <h2 class="text-xl font-bold mb-4">Implementasi Container</h2>
-           <div class="grid md:grid-cols-2 gap-4">
-               <div>
-                   <h3 class="font-semibold mb-2">Container Architecture:</h3>
-                   <ul class="list-disc ml-6">
-                       <li>Frontend container (Nginx + React)</li>
-                       <li>Backend container (Node.js)</li>
-                       <li>Database container (MongoDB)</li>
-                   </ul>
-               </div>
-               <div>
-                   <h3 class="font-semibold mb-2">Container Orchestration:</h3>
-                   <ul class="list-disc ml-6">
-                       <li>Development: Docker Compose</li>
-                       <li>Production: Railway Container Service</li>
-                   </ul>
-               </div>
-           </div>
-       </div>
-
-       <!-- API Endpoints -->
-       <div class="bg-white shadow rounded-lg p-6">
-           <h2 class="text-xl font-bold mb-4">API Endpoints</h2>
-           <div class="space-y-4">
-               <div>
-                   <h3 class="font-semibold">Public Routes:</h3>
-                   <ul class="list-disc ml-6">
-                       <li><code>/api/auth/register</code> - Registrasi pengguna</li>
-                       <li><code>/api/auth/login</code> - Login pengguna</li>
-                       <li><code>/api/products</code> - Daftar produk</li>
-                   </ul>
-               </div>
-               <div>
-                   <h3 class="font-semibold">Protected Routes:</h3>
-                   <ul class="list-disc ml-6">
-                       <li><code>/api/quiz/submit</code> - Submit hasil quiz</li>
-                       <li><code>/api/quiz/history</code> - Riwayat quiz</li>
-                       <li><code>/api/products/recommendations</code> - Rekomendasi produk</li>
-                       <li><code>/api/auth/profile</code> - Manajemen profil</li>
+                       <li>Rate limit handling</li>
+                       <li>Automatic token refresh</li>
                    </ul>
                </div>
            </div>
