@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoute from './components/PrivateRoute';
 import Profile from './pages/Profile';
+import Products from './pages/Products';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/products" element={<Products />} />
             <Route
               path="/quiz"
               element={

@@ -15,6 +15,7 @@ function Navbar() {
         <div className="flex justify-between items-center py-4">
           <Link to="/" className="text-xl font-bold">SkinMatch</Link>
           <div className="space-x-4">
+            <Link to="/products" className="text-gray-700 hover:text-gray-900">Products</Link>
             {token ? (
               <>
                 <Link to="/quiz" className="text-gray-700 hover:text-gray-900">Quiz</Link>
